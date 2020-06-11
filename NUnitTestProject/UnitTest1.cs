@@ -42,6 +42,7 @@ namespace NUnitTestProject
         [TestCaseSource(typeof(TestData), "Orders")]
         public void OrderValidationSuccessTest(Order order)
         {
+            order.ForceValidate();
             Assert.IsFalse(order.ValidationErrors.Any());
             Assert.IsEmpty(order.Error);
         }
@@ -49,6 +50,7 @@ namespace NUnitTestProject
         [TestCaseSource(typeof(TestData), "ErrorOrders")]
         public void OrderValidationErrorTest(Order order)
         {
+            order.ForceValidate();
             Assert.IsNotEmpty(order.Error);
         }
     }

@@ -98,20 +98,20 @@ namespace WpfApp.Models
         {
             get
             {
-                if (!this.ValidationErrors.Any())
+                if (this.ValidationErrors == null)
                 {
-                    _ = this[nameof(this.TradingAccount)];
-                    _ = this[nameof(this.UserID)];
-                    _ = this[nameof(this.InstrumentCode)];
-                    _ = this[nameof(this.Side)];
-                    _ = this[nameof(this.Price)];
-                    _ = this[nameof(this.Quantity)];
+                    return null;
                 }
                 return string.Join(", ", this.ValidationErrors);
             }
         }
         #endregion
 
+        /// <summary>
+        /// Parse a string (in CSV format) to Order object
+        /// </summary>
+        /// <param name="line"></param>
+        /// <returns></returns>
         public static Order Parse(string line)
         {
             if (string.IsNullOrEmpty(line))
@@ -138,14 +138,33 @@ namespace WpfApp.Models
             }
         }
 
+        /// <summary>
+        /// Method to write the all of the Property names (in CSV format)
+        /// </summary>
+        /// <returns></returns>
         public static string CSVHeaders()
         {
             return $"{nameof(TradingAccount)},{nameof(UserID)},{nameof(InstrumentCode)},{nameof(Side)},{nameof(Price)},{nameof(Quantity)}";
         }
 
+        /// <summary>
+        /// Helper method to write Order to string (in CSV format)
+        /// </summary>
+        /// <returns></returns>
         public string ToCSV()
         {
             return $"{this.TradingAccount},{this.UserID},{this.InstrumentCode},{this.Side},{this.Price},{this.Quantity}";
+        }
+
+        public string ForceValidate()
+        {
+            _ = this[nameof(this.TradingAccount)];
+            _ = this[nameof(this.UserID)];
+            _ = this[nameof(this.InstrumentCode)];
+            _ = this[nameof(this.Side)];
+            _ = this[nameof(this.Price)];
+            _ = this[nameof(this.Quantity)];
+            return string.Join(", ", this.ValidationErrors);
         }
 
     }

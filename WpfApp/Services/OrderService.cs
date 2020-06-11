@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using WpfApp.Models;
 
@@ -48,6 +49,7 @@ namespace WpfApp.Services
 
         public string ValidateOrder(Order order)
         {
+            order.ForceValidate();
             return order?.Error;
         }
 
@@ -62,6 +64,7 @@ namespace WpfApp.Services
             List<string> errors = new List<string>();
             foreach(var order in orders)
             {
+                order.ForceValidate();
                 string error = order.Error;
                 if(!string.IsNullOrEmpty(error))
                 {
@@ -71,11 +74,19 @@ namespace WpfApp.Services
             return string.Join(Environment.NewLine, errors);
         }
 
+        /// <summary>
+        /// Send order will return the status after 5 seconds
+        /// </summary>
+        /// <param name="order"></param>
+        /// <returns></returns>
         public OrderStatus SendOrder(Order order)
         {
             //var max = Enum.GetValues(typeof(OrderStatus)).Cast<OrderStatus>().Max();
             //int index = rand.Next(max);
             int index = rand.Next(3);
+
+            Thread.Sleep(5000); // simulate long process
+
             switch (index)
             {
                 case 0: return OrderStatus.Rejected;

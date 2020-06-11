@@ -10,10 +10,10 @@ namespace WpfApp.Services
 
         Task<bool> SaveFileAsync(IEnumerable<Order> orders, string file);
 
+        OrderStatus SendOrder(Order order);
+
         string ValidateOrder(Order order);
 
         string ValidateOrders(IEnumerable<Order> orders);
-
-        OrderStatus SendOrder(Order order);
     }
 }
